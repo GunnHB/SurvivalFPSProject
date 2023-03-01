@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera _playerCamera;
     private Rigidbody _rigid;
     private CapsuleCollider _collider;                  // 착지 여부를 판단하기 위함
+    private GunController _gunController;
 
     [Header("[Variables - Speed]")]
     [SerializeField] private float _walkSpeed;
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         _rigid = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
+        _gunController = GetComponentInChildren<GunController>();
 
         _applySpeed = _walkSpeed;
         _originPosY = _playerCamera.transform.localPosition.y;
@@ -145,6 +147,9 @@ public class PlayerController : MonoBehaviour
 
         _isRun = true;
         _applySpeed = _runSpeed;
+
+        if (_gunController != null && _gunController.IsFineSightMode)
+            _gunController.CancelFineSight();
     }
 
     private void RunningCancel()

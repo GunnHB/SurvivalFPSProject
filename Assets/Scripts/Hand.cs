@@ -5,7 +5,7 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     [Header("[Components]")]
-    [SerializeField] private Animator _handAnimator;           // 애니메이션
+    [SerializeField] private Animator _handAnimator;       // 애니메이션
 
     [Header("[Variables]")]
     [SerializeField] private string _handName;             // 너클이나 맨손 구분
