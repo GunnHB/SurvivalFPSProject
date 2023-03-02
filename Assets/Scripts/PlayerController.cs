@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigid;
     private CapsuleCollider _collider;                  // 착지 여부를 판단하기 위함
     private GunController _gunController;
+    [SerializeField] private Crosshair _crosshair;
 
     [Header("[Variables - Speed]")]
     [SerializeField] private float _walkSpeed;
@@ -29,9 +30,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _cameraRotationLimit;
     private float _currentCameraRotationX;
 
+    private bool _isWalk = false;
     private bool _isRun = false;
     private bool _isCrouch = false;
     private bool _isGround = true;
+
+    // 움직임 체크 변수
+    private Vector3 lastPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +58,7 @@ public class PlayerController : MonoBehaviour
         TryRun();
         TryCrouch();
         Move();
+        MoveCheck();
         CameraRotation();
         CharacterRotation();
     }
@@ -68,6 +74,7 @@ public class PlayerController : MonoBehaviour
     private void Crouch()
     {
         _isCrouch = !_isCrouch;
+        _crosshair.CrouchingAnimation(_isCrouch);
 
         if (_isCrouch)
         {
@@ -147,6 +154,7 @@ public class PlayerController : MonoBehaviour
 
         _isRun = true;
         _applySpeed = _runSpeed;
+        _crosshair.RunningAnimation(_isRun);
 
         if (_gunController != null && _gunController.IsFineSightMode)
             _gunController.CancelFineSight();
@@ -156,7 +164,7 @@ public class PlayerController : MonoBehaviour
     {
         _isRun = false;
         _applySpeed = _walkSpeed;
-
+        _crosshair.RunningAnimation(_isRun);
     }
 
     private void Move()
@@ -170,6 +178,20 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = (moveHorizontal + moveVertical).normalized * _applySpeed;
 
         _rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+    }
+
+    private void MoveCheck()
+    {
+        if (!_isRun && !_isCrouch)
+        {
+            if (Vector3.Distance(lastPosition, transform.position) >= .01f)
+                _isWalk = true;
+            else
+                _isWalk = false;
+
+            _crosshair.WalkingAnimation(_isWalk);
+            lastPosition = transform.position;
+        }
     }
 
     // 상하 카메라 회전

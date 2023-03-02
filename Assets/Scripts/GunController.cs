@@ -97,6 +97,7 @@ public class GunController : MonoBehaviour
                 return;
 
             _objectPool.GetObject(_hitInfo.point, Quaternion.LookRotation(_hitInfo.normal));
+            // 풀에 반환은 나중에 고민하는걸로
         }
     }
 
