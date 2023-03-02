@@ -22,6 +22,7 @@ public class GunController : MonoBehaviour
     private RaycastHit _hitInfo;                    // 탄의 충돌 정보
 
     public bool IsFineSightMode => _isFineSightMode;
+    public Gun CurrentGun => _currentGun;
 
     private void Start()
     {
