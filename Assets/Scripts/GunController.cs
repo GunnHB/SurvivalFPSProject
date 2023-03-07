@@ -7,6 +7,7 @@ public class GunController : MonoBehaviour
     [Header("[Components]")]
     [SerializeField] private Gun _currentGun;
     [SerializeField] private Camera _playerCamera;
+    [SerializeField] private Crosshair _crosshair;
     private AudioSource _audioSource;
 
     private float _currentFireRate;
@@ -70,6 +71,8 @@ public class GunController : MonoBehaviour
     // 실제 총알이 날아감
     private void Shoot()
     {
+        _crosshair.FireAnimation();
+
         _currentGun.CurrentBulletCount--;
 
         // 연사 속도 재계산
@@ -86,8 +89,16 @@ public class GunController : MonoBehaviour
 
     private void Hit()
     {
+        float minAcc = -_crosshair.GetAccuracy() - _currentGun.Accuracy;
+        float maxAcc = _crosshair.GetAccuracy() + _currentGun.Accuracy;
+
+        float posX = Random.Range(minAcc, maxAcc);
+        float posY = Random.Range(minAcc, maxAcc);
+
+        Vector3 randomAccuracy = new Vector3(posX, posY, 0);
+
         // localPosition 으로 하면 어디있든 위치가 같아짐
-        if (Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out _hitInfo, _currentGun.Range))
+        if (Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward + randomAccuracy, out _hitInfo, _currentGun.Range))
         {
             // // _hitInfo.normal == 충돌한 객체의 표면을 반환
             // GameObject clone = Instantiate(_ammoHitParticlePrefab, _hitInfo.point, Quaternion.LookRotation(_hitInfo.normal));
@@ -159,6 +170,7 @@ public class GunController : MonoBehaviour
     {
         _isFineSightMode = !_isFineSightMode;
         _currentGun.GunAnimator.SetBool("FineSightMode", _isFineSightMode);
+        _crosshair.FineSightAnimation(_isFineSightMode);
 
         StopAllCoroutines();
 

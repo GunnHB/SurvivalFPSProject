@@ -5537,6 +5537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentGun: {fileID: 6009264636180017752}
   _playerCamera: {fileID: 963194227}
+  _crosshair: {fileID: 885587826}
   _objectPool:
     _poolPrefab: {fileID: 8703889983224626918, guid: 8a12de68609b7784da029aa6a729211b, type: 3}
     _amount: 10
@@ -5890,6 +5891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 2025485234}
+  _gunController: {fileID: 852728581}
   _objCrosshairHUD: {fileID: 2025485232}
 --- !u!1 &888727552
 GameObject:
@@ -11684,7 +11686,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648726838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12986,14 +12988,14 @@ MonoBehaviour:
   _fireSound: {fileID: 8300000, guid: 780cb5215d1fc9e45b5a8fbddd9ace4b, type: 3}
   _gunName: SubMachineGun1
   _ragne: 100
-  _accuracy: 0
+  _accuracy: 0.01
   _fireRate: 0.1
   _reloadTime: 2
   _damage: 30
-  _reloadBulletCount: 10
-  _currentBulletCount: 23
+  _reloadBulletCount: 30
+  _currentBulletCount: 30
   _maxBulletCount: 0
-  _carryBulletCount: 15
+  _carryBulletCount: 450
   _retroActionForce: 0.3
   _retroActionFineSightForce: 0.7
   _fineSightOriginPosition: {x: 0.5, y: 0.33, z: -0.586}

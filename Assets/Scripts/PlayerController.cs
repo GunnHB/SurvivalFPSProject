@@ -6,10 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     [Header("[Components]")]
     [SerializeField] private Camera _playerCamera;
+    [SerializeField] private Crosshair _crosshair;
     private Rigidbody _rigid;
     private CapsuleCollider _collider;                  // 착지 여부를 판단하기 위함
     private GunController _gunController;
-    [SerializeField] private Crosshair _crosshair;
 
     [Header("[Variables - Speed]")]
     [SerializeField] private float _walkSpeed;
@@ -122,6 +122,7 @@ public class PlayerController : MonoBehaviour
         // _collider.bounds.extents.y -> 콜라이더의 y 값의 절반만큼의 길이로 발사
         // + .1f 혹시 모를 상황에 대비하여 여유값을 추가 
         _isGround = Physics.Raycast(transform.position, Vector3.down, _collider.bounds.extents.y + .1f);
+        _crosshair.RunningAnimation(!_isGround);
     }
 
     private void TryJump()
@@ -177,17 +178,19 @@ public class PlayerController : MonoBehaviour
 
         Vector3 velocity = (moveHorizontal + moveVertical).normalized * _applySpeed;
 
-        _rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+        // _rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+        transform.position = transform.position + velocity * Time.deltaTime;
     }
 
     private void MoveCheck()
     {
-        if (!_isRun && !_isCrouch)
+        if (!_isRun && !_isCrouch && _isGround)
         {
-            if (Vector3.Distance(lastPosition, transform.position) >= .01f)
+            if (Vector3.Distance(lastPosition, transform.position) >= .03f)
                 _isWalk = true;
             else
                 _isWalk = false;
+
 
             _crosshair.WalkingAnimation(_isWalk);
             lastPosition = transform.position;
